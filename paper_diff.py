@@ -75,20 +75,12 @@ def perform_compare():
 
     for type, p1, p2 in diffs:
         if type == 'change':
-            text_output.insert(tk.END, "[MODIFIED]\n", 'header_mod')
-            
-            # Simple word-level diff for the paragraph
-            # This is a basic implementation. For better word diff, we'd need more logic.
-            # Here we just show old and new.
-            
-            # Let's try a slightly better word diff using difflib.ndiff
-            # But for MVP, maybe just showing Old vs New is clearer?
-            # The requirement says "show word-level differences".
+            text_output.insert(tk.END, "● Modified Paragraph\n", 'header_mod')
             
             s = difflib.SequenceMatcher(None, p1.split(), p2.split())
             for opcode, a0, a1, b0, b1 in s.get_opcodes():
                 if opcode == 'equal':
-                    text_output.insert(tk.END, " ".join(p1.split()[a0:a1]) + " ")
+                    text_output.insert(tk.END, " ".join(p1.split()[a0:a1]) + " ", 'normal_text')
                 elif opcode == 'insert':
                     text_output.insert(tk.END, " ".join(p2.split()[b0:b1]) + " ", 'added')
                 elif opcode == 'delete':
@@ -97,14 +89,16 @@ def perform_compare():
                     text_output.insert(tk.END, " ".join(p1.split()[a0:a1]) + " ", 'removed')
                     text_output.insert(tk.END, " ".join(p2.split()[b0:b1]) + " ", 'added')
             
-            text_output.insert(tk.END, "\n\n")
+            text_output.insert(tk.END, "\n\n" + "-"*40 + "\n\n", 'separator')
 
         elif type == 'delete':
-            text_output.insert(tk.END, "[DELETED]\n", 'header_del')
+            text_output.insert(tk.END, "● Deleted Paragraph\n", 'header_del')
             text_output.insert(tk.END, p1 + "\n\n", 'removed_block')
+            text_output.insert(tk.END, "-"*40 + "\n\n", 'separator')
         elif type == 'insert':
-            text_output.insert(tk.END, "[ADDED]\n", 'header_add')
+            text_output.insert(tk.END, "● New Paragraph\n", 'header_add')
             text_output.insert(tk.END, p2 + "\n\n", 'added_block')
+            text_output.insert(tk.END, "-"*40 + "\n\n", 'separator')
 
 def browse_file(entry_widget):
     filename = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
@@ -141,19 +135,26 @@ def main():
     btn_compare.pack(pady=5)
 
     # Output Area
-    text_output = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=("Consolas", 10))
+    text_output = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=("Georgia", 11), padx=10, pady=10)
     text_output.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
     # Tags for styling
-    text_output.tag_config('header_mod', foreground='blue', font=("Arial", 10, "bold"))
-    text_output.tag_config('header_add', foreground='green', font=("Arial", 10, "bold"))
-    text_output.tag_config('header_del', foreground='red', font=("Arial", 10, "bold"))
+    # Headers
+    text_output.tag_config('header_mod', foreground='#455a64', font=("Segoe UI", 10, "bold"), spacing3=5)
+    text_output.tag_config('header_add', foreground='#2e7d32', font=("Segoe UI", 10, "bold"), spacing3=5)
+    text_output.tag_config('header_del', foreground='#c62828', font=("Segoe UI", 10, "bold"), spacing3=5)
 
-    text_output.tag_config('added', foreground='green', background='#e6ffec')
-    text_output.tag_config('removed', foreground='red', background='#ffe6e6', overstrike=True)
+    # Content diffs
+    text_output.tag_config('normal_text', foreground='#212121')
+    text_output.tag_config('added', foreground='#1b5e20', background='#e8f5e9')
+    text_output.tag_config('removed', foreground='#b71c1c', background='#ffebee', overstrike=True)
 
-    text_output.tag_config('added_block', foreground='green')
-    text_output.tag_config('removed_block', foreground='red')
+    # Blocks
+    text_output.tag_config('added_block', foreground='#1b5e20', background='#e8f5e9', lmargin1=20, lmargin2=20)
+    text_output.tag_config('removed_block', foreground='#b71c1c', background='#ffebee', lmargin1=20, lmargin2=20)
+    
+    # Separator
+    text_output.tag_config('separator', foreground='#cfd8dc', justify='center')
 
     root.mainloop()
 
