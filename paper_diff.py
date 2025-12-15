@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog, scrolledtext
+from tkinter import filedialog, scrolledtext, ttk
 import difflib
 import re
 
@@ -11,6 +11,47 @@ COLOR_FG_DEL = "#b71c1c" # Dark Red
 COLOR_BG_ADD = "#e8f5e9" # Light Green
 COLOR_FG_ADD = "#1b5e20" # Dark Green
 COLOR_SEPARATOR = "#cfd8dc"
+
+# Language Dictionary
+LANGUAGES = {
+    "English": {
+        "window_title": "Paper Diff",
+        "btn_compare": "COMPARE DOCUMENTS",
+        "chk_sync": "Synchronize Scrolling",
+        "lbl_original": "Original Document",
+        "lbl_revised": "Revised Document",
+        "btn_browse": "Browse...",
+        "msg_select_files": "Please select both files.",
+        "msg_no_diff": "No differences found.",
+        "header_mod": "● Modified\n",
+        "header_del": "● Deleted\n",
+        "header_add": "● Added\n",
+        "placeholder_del": "\n(Deleted)\n",
+        "placeholder_add": "\n(Added)\n",
+        "ctx_copy": "Copy"
+    },
+    "中文": {
+        "window_title": "文档对比工具",
+        "btn_compare": "开始对比",
+        "chk_sync": "同步滚动",
+        "lbl_original": "原文档",
+        "lbl_revised": "修改后文档",
+        "btn_browse": "浏览...",
+        "msg_select_files": "请选择两个文件。",
+        "msg_no_diff": "未发现差异。",
+        "header_mod": "● 修改\n",
+        "header_del": "● 删除\n",
+        "header_add": "● 新增\n",
+        "placeholder_del": "\n(已删除)\n",
+        "placeholder_add": "\n(新增)\n",
+        "ctx_copy": "复制"
+    }
+}
+
+current_lang = "中文" # Default to Chinese as user requested
+
+def get_text(key):
+    return LANGUAGES[current_lang].get(key, key)
 
 def load_file(filepath):
     """Reads a file and returns its content."""
@@ -38,7 +79,7 @@ def perform_compare():
     if not file1_path or not file2_path:
         text_left.delete('1.0', tk.END)
         text_right.delete('1.0', tk.END)
-        text_left.insert(tk.END, "Please select both files.")
+        text_left.insert(tk.END, get_text("msg_select_files"))
         return
 
     content1 = load_file(file1_path)
@@ -64,7 +105,6 @@ def perform_compare():
         p1_block = paragraphs1[i1:i2]
         p2_block = paragraphs2[j1:j2]
         
-        # We try to match them up 1-to-1 as much as possible for display
         max_len = max(len(p1_block), len(p2_block))
         
         for k in range(max_len):
@@ -74,8 +114,8 @@ def perform_compare():
             # Header / Context
             if p1 and p2:
                 # Modified
-                text_left.insert(tk.END, "● Modified\n", 'header_mod')
-                text_right.insert(tk.END, "● Modified\n", 'header_mod')
+                text_left.insert(tk.END, get_text("header_mod"), 'header_mod')
+                text_right.insert(tk.END, get_text("header_mod"), 'header_mod')
                 
                 # Word-level diff
                 s = difflib.SequenceMatcher(None, tokenize(p1), tokenize(p2))
@@ -93,24 +133,24 @@ def perform_compare():
                         
             elif p1 and not p2:
                 # Deleted
-                text_left.insert(tk.END, "● Deleted\n", 'header_del')
+                text_left.insert(tk.END, get_text("header_del"), 'header_del')
                 text_left.insert(tk.END, p1, 'removed_block')
                 
-                text_right.insert(tk.END, "\n(Deleted)\n", 'placeholder')
+                text_right.insert(tk.END, get_text("placeholder_del"), 'placeholder')
                 
             elif not p1 and p2:
                 # Added
-                text_left.insert(tk.END, "\n(Added)\n", 'placeholder')
+                text_left.insert(tk.END, get_text("placeholder_add"), 'placeholder')
                 
-                text_right.insert(tk.END, "● Added\n", 'header_add')
+                text_right.insert(tk.END, get_text("header_add"), 'header_add')
                 text_right.insert(tk.END, p2, 'added_block')
             
             insert_separator(text_left)
             insert_separator(text_right)
 
     if not has_changes:
-        text_left.insert(tk.END, "No differences found.")
-        text_right.insert(tk.END, "No differences found.")
+        text_left.insert(tk.END, get_text("msg_no_diff"))
+        text_right.insert(tk.END, get_text("msg_no_diff"))
 
 def browse_file(entry_widget):
     filename = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
@@ -118,27 +158,50 @@ def browse_file(entry_widget):
         entry_widget.delete(0, tk.END)
         entry_widget.insert(0, filename)
 
+def update_ui_text():
+    root.title(get_text("window_title"))
+    btn_compare.config(text=get_text("btn_compare"))
+    chk_sync.config(text=get_text("chk_sync"))
+    lbl_original.config(text=get_text("lbl_original"))
+    lbl_revised.config(text=get_text("lbl_revised"))
+    btn_browse_left.config(text=get_text("btn_browse"))
+    btn_browse_right.config(text=get_text("btn_browse"))
+
+def change_language(event):
+    global current_lang
+    current_lang = combo_lang.get()
+    update_ui_text()
+
 def main():
-    global entry_original, entry_revised, text_left, text_right
+    global root, entry_original, entry_revised, text_left, text_right
+    global btn_compare, chk_sync, lbl_original, lbl_revised, btn_browse_left, btn_browse_right, combo_lang
     
     root = tk.Tk()
-    root.title("Paper Diff")
-    root.geometry("1200x800")
+    root.geometry("1280x720")
     
     # 1. Top Bar
     frame_top = tk.Frame(root, pady=10)
     frame_top.pack(side=tk.TOP, fill=tk.X)
     
-    btn_compare = tk.Button(frame_top, text="COMPARE DOCUMENTS", command=perform_compare, 
+    btn_compare = tk.Button(frame_top, command=perform_compare, 
                             bg="#1976d2", fg="white", font=("Segoe UI", 12, "bold"), padx=30, pady=8, relief=tk.FLAT, cursor="hand2")
     btn_compare.pack(side=tk.LEFT, padx=20)
     
     # Sync Scroll Checkbox
     global var_sync
     var_sync = tk.BooleanVar(value=True)
-    chk_sync = tk.Checkbutton(frame_top, text="Synchronize Scrolling", variable=var_sync, 
+    chk_sync = tk.Checkbutton(frame_top, variable=var_sync, 
                               font=("Segoe UI", 10), bg="#f0f0f0", activebackground="#f0f0f0")
     chk_sync.pack(side=tk.LEFT)
+    
+    # Language Selector
+    frame_lang = tk.Frame(frame_top)
+    frame_lang.pack(side=tk.RIGHT, padx=20)
+    tk.Label(frame_lang, text="Language / 语言: ").pack(side=tk.LEFT)
+    combo_lang = ttk.Combobox(frame_lang, values=["English", "中文"], state="readonly", width=10)
+    combo_lang.set(current_lang)
+    combo_lang.pack(side=tk.LEFT)
+    combo_lang.bind("<<ComboboxSelected>>", change_language)
     
     # 2. File Selectors
     frame_files = tk.Frame(root, pady=5, padx=20)
@@ -147,18 +210,22 @@ def main():
     # Left Selector
     frame_f_left = tk.Frame(frame_files)
     frame_f_left.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
-    tk.Label(frame_f_left, text="Original Document", font=FONT_HEADER, fg=COLOR_FG_DEL).pack(anchor="w")
+    lbl_original = tk.Label(frame_f_left, font=FONT_HEADER, fg=COLOR_FG_DEL)
+    lbl_original.pack(anchor="w")
     entry_original = tk.Entry(frame_f_left)
     entry_original.pack(fill=tk.X, pady=2)
-    tk.Button(frame_f_left, text="Browse...", command=lambda: browse_file(entry_original)).pack(anchor="e")
+    btn_browse_left = tk.Button(frame_f_left, command=lambda: browse_file(entry_original))
+    btn_browse_left.pack(anchor="e")
     
     # Right Selector
     frame_f_right = tk.Frame(frame_files)
     frame_f_right.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=(10, 0))
-    tk.Label(frame_f_right, text="Revised Document", font=FONT_HEADER, fg=COLOR_FG_ADD).pack(anchor="w")
+    lbl_revised = tk.Label(frame_f_right, font=FONT_HEADER, fg=COLOR_FG_ADD)
+    lbl_revised.pack(anchor="w")
     entry_revised = tk.Entry(frame_f_right)
     entry_revised.pack(fill=tk.X, pady=2)
-    tk.Button(frame_f_right, text="Browse...", command=lambda: browse_file(entry_revised)).pack(anchor="e")
+    btn_browse_right = tk.Button(frame_f_right, command=lambda: browse_file(entry_revised))
+    btn_browse_right.pack(anchor="e")
     
     # 3. Output Area (Two Panels)
     frame_output = tk.Frame(root, pady=10, padx=20)
@@ -186,7 +253,7 @@ def main():
     text_left.config(yscrollcommand=sync_scroll_left)
     text_right.config(yscrollcommand=sync_scroll_right)
     
-    # Configure Tags (Apply to both)
+    # Configure Tags
     for t in [text_left, text_right]:
         t.tag_config('header_mod', foreground='#455a64', font=FONT_HEADER, spacing3=5)
         t.tag_config('header_add', foreground=COLOR_FG_ADD, font=FONT_HEADER, spacing3=5)
@@ -200,6 +267,28 @@ def main():
         
         t.tag_config('placeholder', foreground='#90a4ae', font=("Segoe UI", 9, "italic"), justify='center')
         t.tag_config('separator', foreground=COLOR_SEPARATOR, justify='center')
+        
+        t.tag_raise("sel")
+        
+    # Context Menu
+    def show_context_menu(event):
+        menu = tk.Menu(root, tearoff=0)
+        menu.add_command(label=get_text("ctx_copy"), command=lambda: event.widget.event_generate("<<Copy>>"))
+        menu.tk_popup(event.x_root, event.y_root)
+
+    text_left.bind("<Button-3>", show_context_menu)
+    text_right.bind("<Button-3>", show_context_menu)
+    
+    # Ctrl+C
+    def copy_text(event=None):
+        event.widget.event_generate("<<Copy>>")
+        return "break"
+    
+    text_left.bind("<Control-c>", copy_text)
+    text_right.bind("<Control-c>", copy_text)
+
+    # Initial Text Update
+    update_ui_text()
 
     root.mainloop()
 
