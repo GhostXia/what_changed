@@ -1,0 +1,5 @@
+This is the first paragraph. It is unchanged.
+
+This is the second paragraph. It has significant changes.
+
+This is a new paragraph that was added.
