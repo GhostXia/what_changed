@@ -1,7 +1,16 @@
 import tkinter as tk
 from tkinter import filedialog, scrolledtext
 import difflib
-import os
+import re
+
+# Configuration
+FONT_TEXT = ("Georgia", 11)
+FONT_HEADER = ("Segoe UI", 10, "bold")
+COLOR_BG_DEL = "#ffebee" # Light Red
+COLOR_FG_DEL = "#b71c1c" # Dark Red
+COLOR_BG_ADD = "#e8f5e9" # Light Green
+COLOR_FG_ADD = "#1b5e20" # Dark Green
+COLOR_SEPARATOR = "#cfd8dc"
 
 def load_file(filepath):
     """Reads a file and returns its content."""
@@ -13,92 +22,95 @@ def load_file(filepath):
 
 def split_paragraphs(text):
     """Splits text into paragraphs based on double newlines."""
-    # Normalize line endings and split by double newline
     return [p.strip() for p in text.replace('\r\n', '\n').split('\n\n') if p.strip()]
 
-def compare_texts(text1, text2):
-    """Compares two texts paragraph by paragraph."""
-    paragraphs1 = split_paragraphs(text1)
-    paragraphs2 = split_paragraphs(text2)
-    
-    matcher = difflib.SequenceMatcher(None, paragraphs1, paragraphs2)
-    diffs = []
-    
-    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
-        if tag == 'equal':
-            continue  # Ignore unchanged blocks
-        
-        # For changed blocks, we want to show what happened
-        if tag == 'replace':
-            for k in range(i2 - i1):
-                p1 = paragraphs1[i1 + k]
-                # Try to match with corresponding paragraph in revised
-                if k < (j2 - j1):
-                    p2 = paragraphs2[j1 + k]
-                    diffs.append(('change', p1, p2))
-                else:
-                    diffs.append(('delete', p1, None))
-            
-            # If there are more paragraphs in revised, they are additions
-            if (j2 - j1) > (i2 - i1):
-                for k in range((i2 - i1), (j2 - j1)):
-                    diffs.append(('insert', None, paragraphs2[j1 + k]))
-                    
-        elif tag == 'delete':
-            for k in range(i1, i2):
-                diffs.append(('delete', paragraphs1[k], None))
-        elif tag == 'insert':
-            for k in range(j1, j2):
-                diffs.append(('insert', None, paragraphs2[k]))
-                
-    return diffs
+def tokenize(text):
+    """Splits text into words and spaces."""
+    return re.findall(r'\S+|\s+', text)
+
+def insert_separator(text_widget):
+    text_widget.insert(tk.END, "\n" + "─"*40 + "\n", 'separator')
 
 def perform_compare():
     file1_path = entry_original.get()
     file2_path = entry_revised.get()
     
     if not file1_path or not file2_path:
-        text_output.delete('1.0', tk.END)
-        text_output.insert(tk.END, "Please select both files.")
+        text_left.delete('1.0', tk.END)
+        text_right.delete('1.0', tk.END)
+        text_left.insert(tk.END, "Please select both files.")
         return
 
     content1 = load_file(file1_path)
     content2 = load_file(file2_path)
     
-    diffs = compare_texts(content1, content2)
+    paragraphs1 = split_paragraphs(content1)
+    paragraphs2 = split_paragraphs(content2)
     
-    text_output.delete('1.0', tk.END)
+    matcher = difflib.SequenceMatcher(None, paragraphs1, paragraphs2)
     
-    if not diffs:
-        text_output.insert(tk.END, "No differences found (or files are identical).")
-        return
-
-    for type, p1, p2 in diffs:
-        if type == 'change':
-            text_output.insert(tk.END, "● Modified Paragraph\n", 'header_mod')
+    text_left.delete('1.0', tk.END)
+    text_right.delete('1.0', tk.END)
+    
+    has_changes = False
+    
+    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+        if tag == 'equal':
+            continue
+        
+        has_changes = True
+        
+        # Handle block of changes
+        p1_block = paragraphs1[i1:i2]
+        p2_block = paragraphs2[j1:j2]
+        
+        # We try to match them up 1-to-1 as much as possible for display
+        max_len = max(len(p1_block), len(p2_block))
+        
+        for k in range(max_len):
+            p1 = p1_block[k] if k < len(p1_block) else None
+            p2 = p2_block[k] if k < len(p2_block) else None
             
-            s = difflib.SequenceMatcher(None, p1.split(), p2.split())
-            for opcode, a0, a1, b0, b1 in s.get_opcodes():
-                if opcode == 'equal':
-                    text_output.insert(tk.END, " ".join(p1.split()[a0:a1]) + " ", 'normal_text')
-                elif opcode == 'insert':
-                    text_output.insert(tk.END, " ".join(p2.split()[b0:b1]) + " ", 'added')
-                elif opcode == 'delete':
-                    text_output.insert(tk.END, " ".join(p1.split()[a0:a1]) + " ", 'removed')
-                elif opcode == 'replace':
-                    text_output.insert(tk.END, " ".join(p1.split()[a0:a1]) + " ", 'removed')
-                    text_output.insert(tk.END, " ".join(p2.split()[b0:b1]) + " ", 'added')
+            # Header / Context
+            if p1 and p2:
+                # Modified
+                text_left.insert(tk.END, "● Modified\n", 'header_mod')
+                text_right.insert(tk.END, "● Modified\n", 'header_mod')
+                
+                # Word-level diff
+                s = difflib.SequenceMatcher(None, tokenize(p1), tokenize(p2))
+                for opcode, a1, a2, b1, b2 in s.get_opcodes():
+                    if opcode == 'equal':
+                        text_left.insert(tk.END, "".join(tokenize(p1)[a1:a2]))
+                        text_right.insert(tk.END, "".join(tokenize(p2)[b1:b2]))
+                    elif opcode == 'replace':
+                        text_left.insert(tk.END, "".join(tokenize(p1)[a1:a2]), 'removed')
+                        text_right.insert(tk.END, "".join(tokenize(p2)[b1:b2]), 'added')
+                    elif opcode == 'delete':
+                        text_left.insert(tk.END, "".join(tokenize(p1)[a1:a2]), 'removed')
+                    elif opcode == 'insert':
+                        text_right.insert(tk.END, "".join(tokenize(p2)[b1:b2]), 'added')
+                        
+            elif p1 and not p2:
+                # Deleted
+                text_left.insert(tk.END, "● Deleted\n", 'header_del')
+                text_left.insert(tk.END, p1, 'removed_block')
+                
+                text_right.insert(tk.END, "\n(Deleted)\n", 'placeholder')
+                
+            elif not p1 and p2:
+                # Added
+                text_left.insert(tk.END, "\n(Added)\n", 'placeholder')
+                
+                text_right.insert(tk.END, "● Added\n", 'header_add')
+                text_right.insert(tk.END, p2, 'added_block')
             
-            text_output.insert(tk.END, "\n\n" + "-"*40 + "\n\n", 'separator')
+            insert_separator(text_left)
+            insert_separator(text_right)
 
-        elif type == 'delete':
-            text_output.insert(tk.END, "● Deleted Paragraph\n", 'header_del')
-            text_output.insert(tk.END, p1 + "\n\n", 'removed_block')
-            text_output.insert(tk.END, "-"*40 + "\n\n", 'separator')
-        elif type == 'insert':
-            text_output.insert(tk.END, "● New Paragraph\n", 'header_add')
-            text_output.insert(tk.END, p2 + "\n\n", 'added_block')
-            text_output.insert(tk.END, "-"*40 + "\n\n", 'separator')
+    if not has_changes:
+        text_left.insert(tk.END, "No differences found.")
+        text_right.insert(tk.END, "No differences found.")
 
 def browse_file(entry_widget):
     filename = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
@@ -107,54 +119,87 @@ def browse_file(entry_widget):
         entry_widget.insert(0, filename)
 
 def main():
-    global entry_original, entry_revised, text_output
+    global entry_original, entry_revised, text_left, text_right
     
-    # GUI Setup
     root = tk.Tk()
-    root.title("Paper Diff MVP")
-    root.geometry("800x600")
-
-    # Frame for file selection
-    frame_top = tk.Frame(root, pady=10)
-    frame_top.pack(fill=tk.X, padx=10)
-
-    # Original File
-    tk.Label(frame_top, text="Original:").grid(row=0, column=0, sticky="w")
-    entry_original = tk.Entry(frame_top, width=50)
-    entry_original.grid(row=0, column=1, padx=5)
-    tk.Button(frame_top, text="Browse", command=lambda: browse_file(entry_original)).grid(row=0, column=2)
-
-    # Revised File
-    tk.Label(frame_top, text="Revised:").grid(row=1, column=0, sticky="w")
-    entry_revised = tk.Entry(frame_top, width=50)
-    entry_revised.grid(row=1, column=1, padx=5)
-    tk.Button(frame_top, text="Browse", command=lambda: browse_file(entry_revised)).grid(row=1, column=2)
-
-    # Compare Button
-    btn_compare = tk.Button(root, text="Compare", command=perform_compare, bg="#dddddd", font=("Arial", 10, "bold"))
-    btn_compare.pack(pady=5)
-
-    # Output Area
-    text_output = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=("Georgia", 11), padx=10, pady=10)
-    text_output.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-
-    # Tags for styling
-    # Headers
-    text_output.tag_config('header_mod', foreground='#455a64', font=("Segoe UI", 10, "bold"), spacing3=5)
-    text_output.tag_config('header_add', foreground='#2e7d32', font=("Segoe UI", 10, "bold"), spacing3=5)
-    text_output.tag_config('header_del', foreground='#c62828', font=("Segoe UI", 10, "bold"), spacing3=5)
-
-    # Content diffs
-    text_output.tag_config('normal_text', foreground='#212121')
-    text_output.tag_config('added', foreground='#1b5e20', background='#e8f5e9')
-    text_output.tag_config('removed', foreground='#b71c1c', background='#ffebee', overstrike=True)
-
-    # Blocks
-    text_output.tag_config('added_block', foreground='#1b5e20', background='#e8f5e9', lmargin1=20, lmargin2=20)
-    text_output.tag_config('removed_block', foreground='#b71c1c', background='#ffebee', lmargin1=20, lmargin2=20)
+    root.title("Paper Diff")
+    root.geometry("1200x800")
     
-    # Separator
-    text_output.tag_config('separator', foreground='#cfd8dc', justify='center')
+    # 1. Top Bar
+    frame_top = tk.Frame(root, pady=10)
+    frame_top.pack(side=tk.TOP, fill=tk.X)
+    
+    btn_compare = tk.Button(frame_top, text="COMPARE DOCUMENTS", command=perform_compare, 
+                            bg="#1976d2", fg="white", font=("Segoe UI", 12, "bold"), padx=30, pady=8, relief=tk.FLAT, cursor="hand2")
+    btn_compare.pack(side=tk.LEFT, padx=20)
+    
+    # Sync Scroll Checkbox
+    global var_sync
+    var_sync = tk.BooleanVar(value=True)
+    chk_sync = tk.Checkbutton(frame_top, text="Synchronize Scrolling", variable=var_sync, 
+                              font=("Segoe UI", 10), bg="#f0f0f0", activebackground="#f0f0f0")
+    chk_sync.pack(side=tk.LEFT)
+    
+    # 2. File Selectors
+    frame_files = tk.Frame(root, pady=5, padx=20)
+    frame_files.pack(side=tk.TOP, fill=tk.X)
+    
+    # Left Selector
+    frame_f_left = tk.Frame(frame_files)
+    frame_f_left.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
+    tk.Label(frame_f_left, text="Original Document", font=FONT_HEADER, fg=COLOR_FG_DEL).pack(anchor="w")
+    entry_original = tk.Entry(frame_f_left)
+    entry_original.pack(fill=tk.X, pady=2)
+    tk.Button(frame_f_left, text="Browse...", command=lambda: browse_file(entry_original)).pack(anchor="e")
+    
+    # Right Selector
+    frame_f_right = tk.Frame(frame_files)
+    frame_f_right.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=(10, 0))
+    tk.Label(frame_f_right, text="Revised Document", font=FONT_HEADER, fg=COLOR_FG_ADD).pack(anchor="w")
+    entry_revised = tk.Entry(frame_f_right)
+    entry_revised.pack(fill=tk.X, pady=2)
+    tk.Button(frame_f_right, text="Browse...", command=lambda: browse_file(entry_revised)).pack(anchor="e")
+    
+    # 3. Output Area (Two Panels)
+    frame_output = tk.Frame(root, pady=10, padx=20)
+    frame_output.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+    
+    # Left Text
+    text_left = scrolledtext.ScrolledText(frame_output, font=FONT_TEXT, wrap=tk.WORD, width=40)
+    text_left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
+    
+    # Right Text
+    text_right = scrolledtext.ScrolledText(frame_output, font=FONT_TEXT, wrap=tk.WORD, width=40)
+    text_right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(5, 0))
+    
+    # Sync Scrolling Logic
+    def sync_scroll_left(*args):
+        text_left.vbar.set(*args)
+        if var_sync.get():
+            text_right.yview_moveto(args[0])
+            
+    def sync_scroll_right(*args):
+        text_right.vbar.set(*args)
+        if var_sync.get():
+            text_left.yview_moveto(args[0])
+            
+    text_left.config(yscrollcommand=sync_scroll_left)
+    text_right.config(yscrollcommand=sync_scroll_right)
+    
+    # Configure Tags (Apply to both)
+    for t in [text_left, text_right]:
+        t.tag_config('header_mod', foreground='#455a64', font=FONT_HEADER, spacing3=5)
+        t.tag_config('header_add', foreground=COLOR_FG_ADD, font=FONT_HEADER, spacing3=5)
+        t.tag_config('header_del', foreground=COLOR_FG_DEL, font=FONT_HEADER, spacing3=5)
+        
+        t.tag_config('removed', foreground=COLOR_FG_DEL, background=COLOR_BG_DEL, overstrike=True)
+        t.tag_config('added', foreground=COLOR_FG_ADD, background=COLOR_BG_ADD)
+        
+        t.tag_config('removed_block', foreground=COLOR_FG_DEL, background=COLOR_BG_DEL)
+        t.tag_config('added_block', foreground=COLOR_FG_ADD, background=COLOR_BG_ADD)
+        
+        t.tag_config('placeholder', foreground='#90a4ae', font=("Segoe UI", 9, "italic"), justify='center')
+        t.tag_config('separator', foreground=COLOR_SEPARATOR, justify='center')
 
     root.mainloop()
 
