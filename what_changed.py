@@ -13,11 +13,10 @@ COLOR_FG_DEL = "#b71c1c" # Dark Red
 COLOR_BG_ADD = "#e8f5e9" # Light Green
 COLOR_FG_ADD = "#1b5e20" # Dark Green
 COLOR_SEPARATOR = "#cfd8dc"
-
 # Language Dictionary
 LANGUAGES = {
     "English": {
-        "window_title": "Paper Diff",
+        "window_title": "What Changed",
         "btn_compare": "COMPARE DOCUMENTS",
         "chk_sync": "Synchronize Scrolling",
         "lbl_original": "Original Document",

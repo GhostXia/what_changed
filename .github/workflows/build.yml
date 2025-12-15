@@ -3,8 +3,13 @@ name: Build Application
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - "v*.*.*"
   pull_request:
     branches: [ "main" ]
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -29,18 +34,46 @@ jobs:
         
     - name: Build with PyInstaller
       run: |
-        pyinstaller --onefile --noconsole --name paper_diff paper_diff.py
+        pyinstaller --onefile --noconsole --name what_changed what_changed.py
         
     - name: Upload Artifact (Windows)
       if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v4
       with:
-        name: paper_diff_windows
-        path: dist/paper_diff.exe
+        name: what_changed_windows
+        path: dist/what_changed.exe
         
     - name: Upload Artifact (macOS)
       if: matrix.os == 'macos-latest'
       uses: actions/upload-artifact@v4
       with:
-        name: paper_diff_macos
-        path: dist/paper_diff
+        name: what_changed_macos
+        path: dist/what_changed
+
+  release:
+    name: Create Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: what_changed_windows
+          
+      - name: Download macOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: what_changed_macos
+          
+      - name: Rename macOS Binary
+        run: mv what_changed what_changed_macos
+          
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            what_changed.exe
+            what_changed_macos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

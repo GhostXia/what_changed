@@ -1,11 +1,11 @@
-# Paper Diff - Academic Document Comparison Tool
+# What Changed - Academic Document Comparison Tool
 # 论文对比工具 - 专为学术写作设计
 
 ![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg) ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)
 
-**Paper Diff** is a lightweight, local desktop tool designed for academic authors to compare long documents and clearly see what has changed. It focuses on readability and low visual noise.
+**What Changed** is a lightweight, local desktop tool designed for academic authors to compare long documents and clearly see what has changed. It focuses on readability and low visual noise.
 
-**Paper Diff** 是一个轻量级的本地桌面工具，专为学术作者设计，用于对比长文档并清晰展示修改内容。它专注于可读性和极简视觉体验。
+**What Changed** 是一个轻量级的本地桌面工具，专为学术作者设计，用于对比长文档并清晰展示修改内容。它专注于可读性和极简视觉体验。
 
 ---
 
