@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import filedialog, scrolledtext, ttk
 import difflib
 import re
+import docx
+import os
 
 # Configuration
 FONT_TEXT = ("Georgia", 11)
@@ -53,11 +55,32 @@ current_lang = "中文" # Default to Chinese as user requested
 def get_text(key):
     return LANGUAGES[current_lang].get(key, key)
 
+def read_docx(filepath):
+    """Reads a .docx file and returns its content."""
+    try:
+        doc = docx.Document(filepath)
+        return "\n".join([para.text for para in doc.paragraphs])
+    except Exception as e:
+        return f"Error reading .docx file: {e}"
+
 def load_file(filepath):
     """Reads a file and returns its content."""
+    ext = os.path.splitext(filepath)[1].lower()
+    if ext == '.docx':
+        return read_docx(filepath)
+    elif ext == '.doc':
+        return "Error: .doc format is not supported directly. Please save as .docx and try again."
+    
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             return f.read()
+    except UnicodeDecodeError:
+        # Try different encoding
+        try:
+            with open(filepath, 'r', encoding='gbk') as f:
+                return f.read()
+        except Exception as e:
+            return f"Error reading file (encoding): {e}"
     except Exception as e:
         return f"Error reading file: {e}"
 
@@ -153,7 +176,16 @@ def perform_compare():
         text_right.insert(tk.END, get_text("msg_no_diff"))
 
 def browse_file(entry_widget):
-    filename = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+    filetypes = [
+        ("Supported Files", "*.txt;*.md;*.docx;*.doc;*.tex;*.py;*.js;*.html;*.css;*.json;*.xml"),
+        ("Word Documents", "*.docx;*.doc"),
+        ("Text Files", "*.txt"),
+        ("Markdown", "*.md"),
+        ("LaTeX", "*.tex"),
+        ("Code Files", "*.py;*.js;*.html;*.css;*.json;*.xml"),
+        ("All Files", "*.*")
+    ]
+    filename = filedialog.askopenfilename(filetypes=filetypes)
     if filename:
         entry_widget.delete(0, tk.END)
         entry_widget.insert(0, filename)
