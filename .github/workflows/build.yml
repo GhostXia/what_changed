@@ -1,12 +1,6 @@
 name: Build Application
 
 on:
-  push:
-    branches: [ "main" ]
-    tags:
-      - "v*.*.*"
-  pull_request:
-    branches: [ "main" ]
   release:
     types: [published]
 
