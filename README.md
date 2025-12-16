@@ -65,6 +65,9 @@
    - 滚动查看结果。使用“同步滚动”复选框来开启或关闭同步功能。
    - 右键点击文本可进行 **复制**。
 
+> 📘 **Need more help?** Check out the detailed [User Guide](USER_GUIDE.md).
+> 📘 **需要更多帮助？** 请查看详细的 [使用说明书](USER_GUIDE.md)。
+
 ---
 
 ## 🛠️ Requirements / 系统要求

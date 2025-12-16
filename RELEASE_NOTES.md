@@ -25,7 +25,11 @@ We are excited to announce the first major release of **What Changed**, a lightw
   - Switch between **English** and **Chinese (中文)** instantly.
   - 支持 **英文** 和 **中文** 界面一键切换。
 
-- **🔒 Privacy First / 隐私优先**
+- **� Whiteboard Mode / 白板模式**
+  - Paste text directly to compare without loading files.
+  - 无需加载文件，直接粘贴文本进行对比。
+
+- **�🔒 Privacy First / 隐私优先**
   - Runs 100% locally on your machine. No data is ever uploaded to the cloud.
   - 100% 本地运行。您的数据永远不会上传到云端。
 
