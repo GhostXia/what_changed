@@ -1,25 +1,52 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="What Changed - 专为学术作者设计的本地论文对比工具。100% 本地运行，隐私优先，专注于展示真正的修改内容。">
-    <title>What Changed - 论文对比工具演示</title>
+    <meta name="description" content="What Changed - A local document comparison tool for academic authors.">
+    <title>What Changed - Document Comparison Tool</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <button id="lang-btn" class="lang-btn" title="Switch Language">
+            <span class="lang-icon">🌐</span>
+            <span id="lang-label">EN</span>
+            <span class="lang-arrow">▼</span>
+        </button>
+        <div id="lang-dropdown" class="lang-dropdown">
+            <div class="lang-option" data-lang="en">
+                <span class="lang-check" id="check-en">✓</span>
+                English
+            </div>
+            <div class="lang-option" data-lang="zh">
+                <span class="lang-check" id="check-zh"></span>
+                中文
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <header class="hero">
         <div class="container">
             <h1 class="hero-title">What Changed</h1>
-            <p class="hero-subtitle">专为学术作者设计的论文对比工具</p>
-            <p class="hero-tagline">本地 · 离线 · 隐私优先</p>
+            <p class="hero-subtitle">
+                <span data-en="Document Comparison Tool for Academic Authors" data-zh="专为学术作者设计的论文对比工具"></span>
+            </p>
+            <p class="hero-tagline">
+                <span data-en="Local · Offline · Privacy First" data-zh="本地 · 离线 · 隐私优先"></span>
+            </p>
             <a href="https://github.com/GhostXia/what-changed/releases" class="btn-primary">
                 <span class="btn-icon">⬇</span>
-                下载 Windows 版本
+                <span data-en="Download for Windows" data-zh="下载 Windows 版本"></span>
             </a>
         </div>
     </header>
@@ -27,26 +54,36 @@
     <!-- Why Section -->
     <section class="section why-section">
         <div class="container">
-            <h2 class="section-title">为什么需要这个工具？</h2>
-            
+            <h2 class="section-title">
+                <span data-en="Why This Tool?" data-zh="为什么需要这个工具？"></span>
+            </h2>
+
             <div class="problem-solution">
                 <div class="problem-card">
-                    <h3>😫 传统对比的痛点</h3>
+                    <h3>😫 <span data-en="The Problem" data-zh="传统对比的痛点"></span></h3>
                     <ul>
-                        <li>Word 的「修订」模式让文档变得混乱不堪</li>
-                        <li>逐行对比工具（如 Git diff）对学术文本不友好</li>
-                        <li>在线对比工具需要上传您的论文 — 有隐私风险</li>
-                        <li>即使只改了几个词，也要翻阅整篇文档</li>
+                        <li><span data-en="Word's Track Changes makes documents messy"
+                                data-zh="Word 的「修订」模式让文档变得混乱不堪"></span></li>
+                        <li><span data-en="Line-by-line diff tools aren't friendly for academic text"
+                                data-zh="逐行对比工具对学术文本不友好"></span></li>
+                        <li><span data-en="Online tools require uploading your paper - privacy risk!"
+                                data-zh="在线工具需要上传您的论文 - 有隐私风险"></span></li>
+                        <li><span data-en="Even for a few word changes, you scroll through the entire document"
+                                data-zh="即使只改了几个词，也要翻阅整篇文档"></span></li>
                     </ul>
                 </div>
-                
+
                 <div class="solution-card">
-                    <h3>✨ What Changed 的解决方案</h3>
+                    <h3>✨ <span data-en="Our Solution" data-zh="解决方案"></span></h3>
                     <ul>
-                        <li><strong>智能分块</strong> — 只展示真正修改的段落</li>
-                        <li><strong>词级高亮</strong> — 精确到每一个修改的词</li>
-                        <li><strong>100% 本地</strong> — 您的论文永远不会离开您的电脑</li>
-                        <li><strong>双栏对照</strong> — 左侧原文，右侧修改稿，一目了然</li>
+                        <li><strong><span data-en="Block-Aware Diff" data-zh="智能分块"></span></strong> — <span
+                                data-en="Only shows paragraphs that changed" data-zh="只展示真正修改的段落"></span></li>
+                        <li><strong><span data-en="Word-Level Highlighting" data-zh="词级高亮"></span></strong> — <span
+                                data-en="Precise to every changed word" data-zh="精确到每一个修改的词"></span></li>
+                        <li><strong><span data-en="100% Local" data-zh="100% 本地"></span></strong> — <span
+                                data-en="Your paper never leaves your computer" data-zh="您的论文永远不会离开电脑"></span></li>
+                        <li><strong><span data-en="Side-by-Side View" data-zh="双栏对照"></span></strong> — <span
+                                data-en="Original left, revised right" data-zh="左侧原文，右侧修改稿"></span></li>
                     </ul>
                 </div>
             </div>
@@ -56,59 +93,91 @@
     <!-- Live Demo Section -->
     <section class="section demo-section">
         <div class="container">
-            <h2 class="section-title">效果演示</h2>
-            <p class="section-desc">以下是一个论文摘要修改的真实示例：</p>
-            
+            <h2 class="section-title">
+                <span data-en="Live Demo" data-zh="效果演示"></span>
+            </h2>
+            <p class="section-desc">
+                <span data-en="A real example of paper abstract revision:" data-zh="以下是一个论文摘要修改的真实示例："></span>
+            </p>
+
             <div class="demo-container">
                 <div class="demo-panel original-panel">
                     <div class="panel-header">
-                        <span class="panel-label">原文 (Original)</span>
+                        <span class="panel-label" data-en="Original" data-zh="原文"></span>
                     </div>
                     <div class="panel-content">
                         <div class="diff-block">
-                            <span class="diff-header">● 修改</span>
-                            <p>
+                            <span class="diff-header">● <span data-en="Modified" data-zh="修改"></span></span>
+                            <p class="demo-text-en">
+                                <span class="deleted">This study explores the application of machine learning in</span>
+                                natural language processing<span class="deleted"> field</span>.
+                                We <span class="deleted">adopted</span> a <span class="deleted">new</span> method to
+                                <span class="deleted">analyze</span> text data,
+                                <span class="deleted">and achieved good</span> results.
+                            </p>
+                            <p class="demo-text-zh">
                                 本研究探讨了<span class="deleted">机器学习在</span>自然语言处理<span class="deleted">领域的</span>应用。
-                                我们<span class="deleted">采用</span>了一种<span class="deleted">新的</span>方法来<span class="deleted">分析</span>文本数据，
+                                我们<span class="deleted">采用</span>了一种<span class="deleted">新的</span>方法来<span
+                                    class="deleted">分析</span>文本数据，
                                 <span class="deleted">并</span>取得了<span class="deleted">较好的</span>结果。
                             </p>
                         </div>
                         <div class="separator"></div>
                         <div class="diff-block">
-                            <span class="diff-header deleted-header">● 删除</span>
-                            <p class="deleted-block">
+                            <span class="diff-header deleted-header">● <span data-en="Deleted"
+                                    data-zh="删除"></span></span>
+                            <p class="deleted-block demo-text-en">
+                                Experiments were conducted on standard datasets, but no comparison with state-of-the-art
+                                methods was performed.
+                            </p>
+                            <p class="deleted-block demo-text-zh">
                                 实验在标准数据集上进行，但未能与最新方法进行对比。
                             </p>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="demo-panel revised-panel">
                     <div class="panel-header">
-                        <span class="panel-label">修改稿 (Revised)</span>
+                        <span class="panel-label" data-en="Revised" data-zh="修改稿"></span>
                     </div>
                     <div class="panel-content">
                         <div class="diff-block">
-                            <span class="diff-header">● 修改</span>
-                            <p>
+                            <span class="diff-header">● <span data-en="Modified" data-zh="修改"></span></span>
+                            <p class="demo-text-en">
+                                <span class="added">This study investigates the application of deep learning techniques
+                                    in</span> natural language processing<span class="added"> tasks</span>.
+                                We <span class="added">propose</span> a <span class="added">novel
+                                    Transformer-based</span> method to <span class="added">process</span> text data,
+                                <span class="added">and experiments demonstrate that our approach achieves significantly
+                                    better</span> results<span class="added"> than baseline models</span>.
+                            </p>
+                            <p class="demo-text-zh">
                                 本研究探讨了<span class="added">深度学习技术在</span>自然语言处理<span class="added">任务中的</span>应用。
-                                我们<span class="added">提出</span>了一种<span class="added">基于 Transformer 的创新</span>方法来<span class="added">处理</span>文本数据，
+                                我们<span class="added">提出</span>了一种<span class="added">基于 Transformer 的创新</span>方法来<span
+                                    class="added">处理</span>文本数据，
                                 <span class="added">实验表明该方法</span>取得了<span class="added">显著优于基线模型的</span>结果。
                             </p>
                         </div>
                         <div class="separator"></div>
                         <div class="diff-block">
-                            <span class="diff-header added-header">● 新增</span>
-                            <p class="added-block">
+                            <span class="diff-header added-header">● <span data-en="Added" data-zh="新增"></span></span>
+                            <p class="added-block demo-text-en">
+                                Furthermore, we conducted comprehensive evaluations on three public benchmark datasets
+                                and performed systematic comparisons with state-of-the-art methods.
+                            </p>
+                            <p class="added-block demo-text-zh">
                                 此外，我们在三个公开基准数据集上进行了全面评估，并与当前最先进的方法进行了系统对比。
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <p class="demo-note">
-                💡 注意：未修改的段落会被自动隐藏，让您专注于真正的变化。
+                💡 <span
+                    data-en="Note: Unchanged paragraphs are automatically hidden to help you focus on real changes."
+                    data-zh="注意：未修改的段落会被自动隐藏，让您专注于真正的变化。"></span>
             </p>
         </div>
     </section>
@@ -116,22 +185,35 @@
     <!-- More Examples Section -->
     <section class="section examples-section">
         <div class="container">
-            <h2 class="section-title">更多应用场景</h2>
-            
+            <h2 class="section-title">
+                <span data-en="Use Cases" data-zh="应用场景"></span>
+            </h2>
+
             <div class="examples-grid">
                 <div class="example-card">
-                    <h3>📝 摘要精简</h3>
-                    <p>对比论文摘要的不同版本，看看哪些内容被删减、哪些表述被优化。</p>
+                    <h3>📝 <span data-en="Abstract Refinement" data-zh="摘要精简"></span></h3>
+                    <p>
+                        <span data-en="Compare different versions of your abstract to see what was trimmed or improved."
+                            data-zh="对比论文摘要的不同版本，看看哪些内容被删减、哪些表述被优化。"></span>
+                    </p>
                 </div>
-                
+
                 <div class="example-card">
-                    <h3>🔬 方法论调整</h3>
-                    <p>追踪实验方法描述的变化，确保审稿意见已被正确落实。</p>
+                    <h3>🔬 <span data-en="Methodology Updates" data-zh="方法论调整"></span></h3>
+                    <p>
+                        <span
+                            data-en="Track changes in experimental method descriptions to ensure reviewer feedback is addressed."
+                            data-zh="追踪实验方法描述的变化，确保审稿意见已被正确落实。"></span>
+                    </p>
                 </div>
-                
+
                 <div class="example-card">
-                    <h3>📊 结论强化</h3>
-                    <p>对比结论部分的前后版本，确保研究贡献被清晰阐述。</p>
+                    <h3>📊 <span data-en="Conclusion Enhancement" data-zh="结论强化"></span></h3>
+                    <p>
+                        <span
+                            data-en="Compare before/after versions of conclusions to ensure contributions are clearly stated."
+                            data-zh="对比结论部分的前后版本，确保研究贡献被清晰阐述。"></span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -140,43 +222,63 @@
     <!-- Features Section -->
     <section class="section features-section">
         <div class="container">
-            <h2 class="section-title">核心特性</h2>
-            
+            <h2 class="section-title">
+                <span data-en="Key Features" data-zh="核心特性"></span>
+            </h2>
+
             <div class="features-grid">
                 <div class="feature-card">
                     <span class="feature-icon">🔒</span>
-                    <h3>隐私优先</h3>
-                    <p>100% 本地运行，无需联网。您的论文数据永远不会离开您的电脑。</p>
+                    <h3><span data-en="Privacy First" data-zh="隐私优先"></span></h3>
+                    <p>
+                        <span data-en="100% local, no internet required. Your data never leaves your computer."
+                            data-zh="100% 本地运行，无需联网，数据永不上传。"></span>
+                    </p>
                 </div>
-                
+
                 <div class="feature-card">
                     <span class="feature-icon">🧠</span>
-                    <h3>智能分块</h3>
-                    <p>自动识别并隐藏未修改的段落，减少视觉干扰。</p>
+                    <h3><span data-en="Block-Aware Diff" data-zh="智能分块"></span></h3>
+                    <p>
+                        <span data-en="Automatically hides unchanged paragraphs to reduce visual noise."
+                            data-zh="自动识别并隐藏未修改的段落，减少视觉干扰。"></span>
+                    </p>
                 </div>
-                
+
                 <div class="feature-card">
                     <span class="feature-icon">📜</span>
-                    <h3>同步滚动</h3>
-                    <p>左右面板同步滚动，始终保持上下文对齐。</p>
+                    <h3><span data-en="Synced Scrolling" data-zh="同步滚动"></span></h3>
+                    <p>
+                        <span data-en="Left and right panels scroll together, keeping context aligned."
+                            data-zh="左右面板同步滚动，始终保持上下文对齐。"></span>
+                    </p>
                 </div>
-                
+
                 <div class="feature-card">
                     <span class="feature-icon">📄</span>
-                    <h3>多格式支持</h3>
-                    <p>支持 .docx、.txt、.md、.tex 等多种学术文档格式。</p>
+                    <h3><span data-en="Multi-Format" data-zh="多格式支持"></span></h3>
+                    <p>
+                        <span data-en="Supports .docx, .txt, .md, .tex and various code files."
+                            data-zh="支持 .docx、.txt、.md、.tex 等多种学术文档格式。"></span>
+                    </p>
                 </div>
-                
+
                 <div class="feature-card">
                     <span class="feature-icon">📝</span>
-                    <h3>白板模式</h3>
-                    <p>无需加载文件，直接粘贴文本即可对比。</p>
+                    <h3><span data-en="Whiteboard Mode" data-zh="白板模式"></span></h3>
+                    <p>
+                        <span data-en="Paste text directly to compare without loading files."
+                            data-zh="无需加载文件，直接粘贴文本即可对比。"></span>
+                    </p>
                 </div>
-                
+
                 <div class="feature-card">
                     <span class="feature-icon">🌐</span>
-                    <h3>中英双语</h3>
-                    <p>界面支持中文和英文即时切换。</p>
+                    <h3><span data-en="Bilingual UI" data-zh="中英双语"></span></h3>
+                    <p>
+                        <span data-en="Switch between English and Chinese interface instantly."
+                            data-zh="界面支持中文和英文即时切换。"></span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -185,19 +287,25 @@
     <!-- Not For Section -->
     <section class="section not-for-section">
         <div class="container">
-            <h2 class="section-title">这个工具<em>不</em>做什么</h2>
-            <p class="section-desc">明确的边界让工具更专注、更可靠。</p>
-            
+            <h2 class="section-title">
+                <span data-en="What We Don't Do" data-zh="我们不做什么"></span>
+            </h2>
+            <p class="section-desc">
+                <span data-en="Clear boundaries make the tool more focused and reliable."
+                    data-zh="明确的边界让工具更专注、更可靠。"></span>
+            </p>
+
             <div class="not-for-list">
-                <div class="not-for-item">❌ 不提供在线版本 / SaaS 服务</div>
-                <div class="not-for-item">❌ 不支持多人协作</div>
-                <div class="not-for-item">❌ 不集成云存储</div>
-                <div class="not-for-item">❌ 不使用 AI 自动改写</div>
-                <div class="not-for-item">❌ 不需要复杂的配置</div>
+                <div class="not-for-item">❌ <span data-en="No online version / SaaS" data-zh="不提供在线版本"></span></div>
+                <div class="not-for-item">❌ <span data-en="No multi-user collaboration" data-zh="不支持多人协作"></span></div>
+                <div class="not-for-item">❌ <span data-en="No cloud storage" data-zh="不集成云存储"></span></div>
+                <div class="not-for-item">❌ <span data-en="No AI auto-rewriting" data-zh="不使用 AI 改写"></span></div>
+                <div class="not-for-item">❌ <span data-en="No complex configuration" data-zh="无需复杂配置"></span></div>
             </div>
-            
+
             <p class="philosophy-quote">
-                "先把「哪里改了」这件事做到极致，其它的都可以慢慢来。"
+                <span data-en="Do one thing well: show what changed. Everything else can wait."
+                    data-zh="先把「哪里改了」这件事做到极致，其它的都可以慢慢来。"></span>
             </p>
         </div>
     </section>
@@ -205,18 +313,24 @@
     <!-- Download Section -->
     <section class="section download-section">
         <div class="container">
-            <h2 class="section-title">立即下载</h2>
-            <p class="section-desc">单文件，双击即可运行，无需安装。</p>
-            
+            <h2 class="section-title">
+                <span data-en="Download Now" data-zh="立即下载"></span>
+            </h2>
+            <p class="section-desc">
+                <span data-en="Single file, double-click to run, no installation required."
+                    data-zh="单文件，双击即可运行，无需安装。"></span>
+            </p>
+
             <div class="download-buttons">
                 <a href="https://github.com/GhostXia/what-changed/releases" class="btn-primary btn-large">
                     <span class="btn-icon">⬇</span>
-                    下载 Windows 版本 (.exe)
+                    <span data-en="Download for Windows (.exe)" data-zh="下载 Windows 版本 (.exe)"></span>
                 </a>
             </div>
-            
+
             <p class="download-note">
-                需要 Windows 10/11 · 无需安装 Python · 开源免费 (AGPL-3.0)
+                <span data-en="Requires Windows 10/11 - No Python needed - Open source (AGPL-3.0)"
+                    data-zh="需要 Windows 10/11 - 无需安装 Python - 开源免费 (AGPL-3.0)"></span>
             </p>
         </div>
     </section>
@@ -225,14 +339,20 @@
     <footer class="footer">
         <div class="container">
             <p>
-                <a href="https://github.com/GhostXia/what-changed" target="_blank">GitHub</a> · 
-                <a href="https://github.com/GhostXia/what-changed/blob/main/README.md" target="_blank">文档</a> · 
-                <a href="https://github.com/GhostXia/what-changed/releases" target="_blank">下载</a>
+                <a href="https://github.com/GhostXia/what-changed" target="_blank">GitHub</a> -
+                <a href="https://github.com/GhostXia/what-changed/blob/main/README.md" target="_blank"><span
+                        data-en="Documentation" data-zh="文档"></span></a> -
+                <a href="https://github.com/GhostXia/what-changed/releases" target="_blank"><span data-en="Releases"
+                        data-zh="下载"></span></a>
             </p>
-            <p class="copyright">© 2024 What Changed. 采用 AGPL-3.0 许可证开源。</p>
+            <p class="copyright">
+                <span data-en="2024 What Changed. Licensed under AGPL-3.0."
+                    data-zh="2024 What Changed. 采用 AGPL-3.0 许可证开源。"></span>
+            </p>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
+
 </html>
