@@ -3,86 +3,99 @@
 
 ![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg) ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey.svg)
 
-**What Changed** is a lightweight, local desktop tool designed for academic authors to compare long documents and clearly see what has changed. It focuses on readability and low visual noise.
-
-**What Changed** 是一个轻量级的本地桌面工具，专为学术作者设计，用于对比长文档并清晰展示修改内容。它专注于可读性和极简视觉体验。
+> **[📺 在线演示](./demo/index.html)** — 一分钟内了解这个工具能做什么
 
 ---
 
-## ✨ Key Features / 核心功能
+## 🎯 它解决什么问题？
 
-- **🔒 Privacy First / 隐私优先**
-  - Runs 100% locally. No internet connection required. Your data never leaves your computer.
-  - 100% 本地运行。无需联网，您的数据永远不会离开您的电脑。
+您是否经历过这些场景：
 
-- **📄 Side-by-Side Comparison / 双栏并排对比**
-  - Intuitive two-panel layout. Original on the left, Revised on the right.
-  - 直观的双栏布局。左侧显示原文，右侧显示修改稿。
+- 📄 论文修改到第 N 版，已经忘了哪里改过了
+- 🔍 Word 的「修订模式」让文档变得混乱不堪
+- 🕵️ 逐行对比太累，但在线工具又担心隐私
+- ⏳ 导师说「就改了几个地方」，结果您翻遍全文也找不到
 
-- **🧠 Block-Aware Diff / 智能分块对比**
-  - Automatically ignores unchanged paragraphs to reduce distraction.
-  - 自动忽略未修改的段落，减少视觉干扰，让您专注于实际变化。
+**What Changed** 就是为此而生：
 
-- **🎨 Clear Highlighting / 清晰高亮**
-  - **Red** for deletions, **Green** for additions. Word-level precision.
-  - **红色**表示删除，**绿色**表示新增。精确到词级的高亮显示。
-
-- **📜 Synchronized Scrolling / 同步滚动**
-  - Scroll one side, and the other side follows automatically.
-  - 滚动一侧，另一侧自动跟随，保持上下文对齐。
-
-- **🌐 Multi-Language / 多语言支持**
-  - Switch between English and Chinese interface instantly.
-  - 支持中英文界面即时切换。
-
-- **📝 Whiteboard Mode / 白板模式**
-  - Paste text directly to compare without loading files.
-  - 无需加载文件，直接粘贴文本进行对比。
+✅ **只看修改，不看废话** — 自动隐藏未修改的段落，让您专注于真正的变化  
+✅ **词级精准高亮** — 红色删除，绿色新增，一目了然  
+✅ **100% 本地运行** — 您的论文永远不会离开您的电脑，没有隐私担忧  
+✅ **单文件、免安装** — 下载即用，双击运行
 
 ---
 
-## 🚀 How to Use / 使用指南
+## ✨ 核心功能
 
-1. **Download / 下载**
-   - Get the latest `what_changed.exe` from the releases.
-   - 下载最新的 `what_changed.exe` 文件。
-
-2. **Run / 运行**
-   - Double-click `what_changed.exe`. No installation needed.
-   - 双击 `what_changed.exe` 即可运行，无需安装。
-
-3. **Compare / 对比**
-   - Click **Browse** to select your **Original Document** and **Revised Document**.
-   - Supports: `.docx` (Recommended), `.txt`, `.md`, `.tex`, and code files.
-   - Click the blue **COMPARE DOCUMENTS** button.
-   - 点击 **浏览** 选择您的 **原文档** 和 **修改后文档**。
-   - 支持格式：`.docx` (推荐), `.txt`, `.md`, `.tex`, 以及各类代码文件。
-   - 点击蓝色的 **开始对比** 按钮。
-
-4. **Review / 查看**
-   - Scroll through the results. Use the "Synchronize Scrolling" checkbox to toggle sync behavior.
-   - Right-click text to **Copy**.
-   - 滚动查看结果。使用“同步滚动”复选框来开启或关闭同步功能。
-   - 右键点击文本可进行 **复制**。
-
-> 📘 **Need more help?** Check out the detailed [User Guide](USER_GUIDE.md).
-> 📘 **需要更多帮助？** 请查看详细的 [使用说明书](USER_GUIDE.md)。
+| 功能 | 描述 |
+|------|------|
+| 🔒 **隐私优先** | 100% 本地运行，无需联网，数据永不上传 |
+| 📄 **双栏并排对比** | 左侧原文，右侧修改稿，直观对照 |
+| 🧠 **智能分块 Diff** | 自动忽略未修改段落，减少视觉干扰 |
+| 🎨 **词级高亮** | <span style="color:red">红色</span>表示删除，<span style="color:green">绿色</span>表示新增 |
+| 📜 **同步滚动** | 左右面板同步滚动，保持上下文对齐 |
+| 📝 **白板模式** | 无需加载文件，直接粘贴文本对比 |
+| 🌐 **中英双语** | 界面支持中英文即时切换 |
 
 ---
 
-## 🛠️ Requirements / 系统要求
+## 🚀 快速开始
 
-- **OS**: Windows 10/11
-- **Files**: 
-  - **.docx** (Word Documents) - Recommended / 推荐
-  - **.txt, .md, .tex** (Plain Text) - UTF-8 encoding recommended / 推荐 UTF-8 编码
-  - *Note: .doc files must be saved as .docx first.* / *注意：.doc 文件需先另存为 .docx 格式。*
-- **系统**: Windows 10/11
-- **文件**: 支持 .docx, .txt, .md, .tex 等。推荐使用 .docx 以获得最佳体验。
+### 1. 下载
+从 [Releases](https://github.com/GhostXia/what-changed/releases) 页面下载 `what_changed.exe`
+
+### 2. 运行
+双击 `what_changed.exe`，无需安装任何依赖
+
+### 3. 对比
+- 点击 **浏览** 选择您的原文档和修改后文档
+- 支持格式：`.docx` (推荐), `.txt`, `.md`, `.tex` 及各类代码文件
+- 点击蓝色的 **开始对比** 按钮
+
+### 4. 查看结果
+- 只有修改过的段落会显示
+- 使用「同步滚动」保持两侧对齐
+- 右键点击可复制文本
+
+> 📘 **需要更多帮助？** 请查看详细的 [使用说明书](USER_GUIDE.md)
 
 ---
 
-## 📝 License / 许可证
+## 🛠️ 系统要求
 
-This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
-本项目采用 GNU Affero General Public License v3.0 (AGPL-3.0) 许可证。
+| 平台 | 要求 |
+|------|------|
+| **Windows** | Windows 10/11 |
+| **文件格式** | `.docx` (推荐), `.txt`, `.md`, `.tex`, `.py`, `.js` 等 |
+| **编码** | 推荐 UTF-8，自动兼容 GBK |
+
+> ⚠️ `.doc` 格式需要先在 Word 中另存为 `.docx`
+
+---
+
+## ❌ 这个工具**不**做什么
+
+我们相信「专注」比「全能」更重要：
+
+- ❌ **不提供在线版本** — 您的论文应该留在您的电脑里
+- ❌ **不支持多人协作** — 这是一个个人工具
+- ❌ **不集成云存储** — 没有账号，没有同步
+- ❌ **不使用 AI 改写** — 只展示差异，不替您做决定
+- ❌ **不需要复杂配置** — 下载即用
+
+> "先把「哪里改了」这件事做到极致，其它的都可以慢慢来。"
+
+---
+
+## 📝 许可证
+
+本项目采用 [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE) 许可证开源。
+
+---
+
+## 🔗 相关链接
+
+- [📺 在线演示](./demo/index.html)
+- [📖 使用说明书](USER_GUIDE.md)
+- [📋 发布说明](RELEASE_NOTES.md)
+- [🐛 提交问题](https://github.com/GhostXia/what-changed/issues)

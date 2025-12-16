@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="What Changed - 专为学术作者设计的本地论文对比工具。100% 本地运行，隐私优先，专注于展示真正的修改内容。">
+    <title>What Changed - 论文对比工具演示</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1 class="hero-title">What Changed</h1>
+            <p class="hero-subtitle">专为学术作者设计的论文对比工具</p>
+            <p class="hero-tagline">本地 · 离线 · 隐私优先</p>
+            <a href="https://github.com/GhostXia/what-changed/releases" class="btn-primary">
+                <span class="btn-icon">⬇</span>
+                下载 Windows 版本
+            </a>
+        </div>
+    </header>
+
+    <!-- Why Section -->
+    <section class="section why-section">
+        <div class="container">
+            <h2 class="section-title">为什么需要这个工具？</h2>
+            
+            <div class="problem-solution">
+                <div class="problem-card">
+                    <h3>😫 传统对比的痛点</h3>
+                    <ul>
+                        <li>Word 的「修订」模式让文档变得混乱不堪</li>
+                        <li>逐行对比工具（如 Git diff）对学术文本不友好</li>
+                        <li>在线对比工具需要上传您的论文 — 有隐私风险</li>
+                        <li>即使只改了几个词，也要翻阅整篇文档</li>
+                    </ul>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>✨ What Changed 的解决方案</h3>
+                    <ul>
+                        <li><strong>智能分块</strong> — 只展示真正修改的段落</li>
+                        <li><strong>词级高亮</strong> — 精确到每一个修改的词</li>
+                        <li><strong>100% 本地</strong> — 您的论文永远不会离开您的电脑</li>
+                        <li><strong>双栏对照</strong> — 左侧原文，右侧修改稿，一目了然</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section class="section demo-section">
+        <div class="container">
+            <h2 class="section-title">效果演示</h2>
+            <p class="section-desc">以下是一个论文摘要修改的真实示例：</p>
+            
+            <div class="demo-container">
+                <div class="demo-panel original-panel">
+                    <div class="panel-header">
+                        <span class="panel-label">原文 (Original)</span>
+                    </div>
+                    <div class="panel-content">
+                        <div class="diff-block">
+                            <span class="diff-header">● 修改</span>
+                            <p>
+                                本研究探讨了<span class="deleted">机器学习在</span>自然语言处理<span class="deleted">领域的</span>应用。
+                                我们<span class="deleted">采用</span>了一种<span class="deleted">新的</span>方法来<span class="deleted">分析</span>文本数据，
+                                <span class="deleted">并</span>取得了<span class="deleted">较好的</span>结果。
+                            </p>
+                        </div>
+                        <div class="separator"></div>
+                        <div class="diff-block">
+                            <span class="diff-header deleted-header">● 删除</span>
+                            <p class="deleted-block">
+                                实验在标准数据集上进行，但未能与最新方法进行对比。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-panel revised-panel">
+                    <div class="panel-header">
+                        <span class="panel-label">修改稿 (Revised)</span>
+                    </div>
+                    <div class="panel-content">
+                        <div class="diff-block">
+                            <span class="diff-header">● 修改</span>
+                            <p>
+                                本研究探讨了<span class="added">深度学习技术在</span>自然语言处理<span class="added">任务中的</span>应用。
+                                我们<span class="added">提出</span>了一种<span class="added">基于 Transformer 的创新</span>方法来<span class="added">处理</span>文本数据，
+                                <span class="added">实验表明该方法</span>取得了<span class="added">显著优于基线模型的</span>结果。
+                            </p>
+                        </div>
+                        <div class="separator"></div>
+                        <div class="diff-block">
+                            <span class="diff-header added-header">● 新增</span>
+                            <p class="added-block">
+                                此外，我们在三个公开基准数据集上进行了全面评估，并与当前最先进的方法进行了系统对比。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="demo-note">
+                💡 注意：未修改的段落会被自动隐藏，让您专注于真正的变化。
+            </p>
+        </div>
+    </section>
+
+    <!-- More Examples Section -->
+    <section class="section examples-section">
+        <div class="container">
+            <h2 class="section-title">更多应用场景</h2>
+            
+            <div class="examples-grid">
+                <div class="example-card">
+                    <h3>📝 摘要精简</h3>
+                    <p>对比论文摘要的不同版本，看看哪些内容被删减、哪些表述被优化。</p>
+                </div>
+                
+                <div class="example-card">
+                    <h3>🔬 方法论调整</h3>
+                    <p>追踪实验方法描述的变化，确保审稿意见已被正确落实。</p>
+                </div>
+                
+                <div class="example-card">
+                    <h3>📊 结论强化</h3>
+                    <p>对比结论部分的前后版本，确保研究贡献被清晰阐述。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features-section">
+        <div class="container">
+            <h2 class="section-title">核心特性</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3>隐私优先</h3>
+                    <p>100% 本地运行，无需联网。您的论文数据永远不会离开您的电脑。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🧠</span>
+                    <h3>智能分块</h3>
+                    <p>自动识别并隐藏未修改的段落，减少视觉干扰。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📜</span>
+                    <h3>同步滚动</h3>
+                    <p>左右面板同步滚动，始终保持上下文对齐。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📄</span>
+                    <h3>多格式支持</h3>
+                    <p>支持 .docx、.txt、.md、.tex 等多种学术文档格式。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📝</span>
+                    <h3>白板模式</h3>
+                    <p>无需加载文件，直接粘贴文本即可对比。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🌐</span>
+                    <h3>中英双语</h3>
+                    <p>界面支持中文和英文即时切换。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Not For Section -->
+    <section class="section not-for-section">
+        <div class="container">
+            <h2 class="section-title">这个工具<em>不</em>做什么</h2>
+            <p class="section-desc">明确的边界让工具更专注、更可靠。</p>
+            
+            <div class="not-for-list">
+                <div class="not-for-item">❌ 不提供在线版本 / SaaS 服务</div>
+                <div class="not-for-item">❌ 不支持多人协作</div>
+                <div class="not-for-item">❌ 不集成云存储</div>
+                <div class="not-for-item">❌ 不使用 AI 自动改写</div>
+                <div class="not-for-item">❌ 不需要复杂的配置</div>
+            </div>
+            
+            <p class="philosophy-quote">
+                "先把「哪里改了」这件事做到极致，其它的都可以慢慢来。"
+            </p>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="section download-section">
+        <div class="container">
+            <h2 class="section-title">立即下载</h2>
+            <p class="section-desc">单文件，双击即可运行，无需安装。</p>
+            
+            <div class="download-buttons">
+                <a href="https://github.com/GhostXia/what-changed/releases" class="btn-primary btn-large">
+                    <span class="btn-icon">⬇</span>
+                    下载 Windows 版本 (.exe)
+                </a>
+            </div>
+            
+            <p class="download-note">
+                需要 Windows 10/11 · 无需安装 Python · 开源免费 (AGPL-3.0)
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>
+                <a href="https://github.com/GhostXia/what-changed" target="_blank">GitHub</a> · 
+                <a href="https://github.com/GhostXia/what-changed/blob/main/README.md" target="_blank">文档</a> · 
+                <a href="https://github.com/GhostXia/what-changed/releases" target="_blank">下载</a>
+            </p>
+            <p class="copyright">© 2024 What Changed. 采用 AGPL-3.0 许可证开源。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
