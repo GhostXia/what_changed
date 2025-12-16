@@ -3,7 +3,7 @@
 
 ![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg) ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey.svg)
 
-> **[📺 在线演示](./demo/index.html)** — 一分钟内了解这个工具能做什么
+> **[📺 在线演示](https://ghostxia.github.io/what_changed/)** — 一分钟内了解这个工具能做什么
 
 ---
 
