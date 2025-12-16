@@ -1,7 +1,7 @@
 # What Changed - Academic Document Comparison Tool
 # 论文对比工具 - 专为学术写作设计
 
-![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg) ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)
+![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg) ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey.svg)
 
 **What Changed** is a lightweight, local desktop tool designed for academic authors to compare long documents and clearly see what has changed. It focuses on readability and low visual noise.
 
