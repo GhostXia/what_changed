@@ -6,6 +6,7 @@ import docx
 import os
 
 # Configuration
+VERSION = "v1.0.0"
 FONT_TEXT = ("Georgia", 11)
 FONT_HEADER = ("Segoe UI", 10, "bold")
 COLOR_BG_DEL = "#ffebee" # Light Red
@@ -190,7 +191,7 @@ def browse_file(entry_widget):
         entry_widget.insert(0, filename)
 
 def update_ui_text():
-    root.title(get_text("window_title"))
+    root.title(f"{get_text('window_title')} {VERSION}")
     btn_compare.config(text=get_text("btn_compare"))
     chk_sync.config(text=get_text("chk_sync"))
     lbl_original.config(text=get_text("lbl_original"))
@@ -228,11 +229,24 @@ def main():
     # Language Selector
     frame_lang = tk.Frame(frame_top)
     frame_lang.pack(side=tk.RIGHT, padx=20)
+    
+    # Version Label (inside frame_lang for better alignment or separate?)
+    # Let's put it separate to the right, or inside. 
+    # Actually, putting it in frame_lang might be crowded. 
+    # Let's pack it to the RIGHT of frame_top, but before frame_lang (which is also packed RIGHT).
+    # Wait, pack side=RIGHT packs from right to left.
+    # So first packed is right-most.
+    # frame_lang is packed RIGHT.
+    # If I pack version label RIGHT, it will be to the left of frame_lang.
+    
     tk.Label(frame_lang, text="Language / 语言: ").pack(side=tk.LEFT)
     combo_lang = ttk.Combobox(frame_lang, values=["English", "中文"], state="readonly", width=10)
     combo_lang.set(current_lang)
     combo_lang.pack(side=tk.LEFT)
     combo_lang.bind("<<ComboboxSelected>>", change_language)
+    
+    # Version Label
+    tk.Label(frame_top, text=VERSION, fg="#90a4ae", font=("Segoe UI", 9)).pack(side=tk.RIGHT, padx=10)
     
     # 2. File Selectors
     frame_files = tk.Frame(root, pady=5, padx=20)

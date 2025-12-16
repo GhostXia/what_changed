@@ -32,9 +32,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Build with PyInstaller
+    - name: Build Windows (EXE)
+      if: matrix.os == 'windows-latest'
       run: |
         pyinstaller --onefile --noconsole --name what_changed what_changed.py
+        
+    - name: Build macOS (DMG)
+      if: matrix.os == 'macos-latest'
+      run: |
+        # Create .app bundle
+        pyinstaller --windowed --noconsole --name "What Changed" what_changed.py
+        # Create DMG from .app
+        hdiutil create -volname "What Changed" -srcfolder "dist/What Changed.app" -ov -format UDZO "dist/what_changed.dmg"
         
     - name: Upload Artifact (Windows)
       if: matrix.os == 'windows-latest'
@@ -48,7 +57,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: what_changed_macos
-        path: dist/what_changed
+        path: dist/what_changed.dmg
 
   release:
     name: Create Release
@@ -67,13 +76,13 @@ jobs:
           name: what_changed_macos
           
       - name: Rename macOS Binary
-        run: mv what_changed what_changed_macos
+        run: mv what_changed.dmg what_changed_macos.dmg
           
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             what_changed.exe
-            what_changed_macos
+            what_changed_macos.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
