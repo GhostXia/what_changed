@@ -20,6 +20,7 @@ LANGUAGES = {
         "window_title": "What Changed",
         "btn_compare": "COMPARE DOCUMENTS",
         "chk_sync": "Synchronize Scrolling",
+        "chk_whiteboard": "Whiteboard Mode",
         "lbl_original": "Original Document",
         "lbl_revised": "Revised Document",
         "btn_browse": "Browse...",
@@ -36,6 +37,7 @@ LANGUAGES = {
         "window_title": "文档对比工具",
         "btn_compare": "开始对比",
         "chk_sync": "同步滚动",
+        "chk_whiteboard": "白板模式",
         "lbl_original": "原文档",
         "lbl_revised": "修改后文档",
         "btn_browse": "浏览...",
@@ -95,18 +97,34 @@ def tokenize(text):
 def insert_separator(text_widget):
     text_widget.insert(tk.END, "\n" + "─"*40 + "\n", 'separator')
 
-def perform_compare():
-    file1_path = entry_original.get()
-    file2_path = entry_revised.get()
-    
-    if not file1_path or not file2_path:
-        text_left.delete('1.0', tk.END)
-        text_right.delete('1.0', tk.END)
-        text_left.insert(tk.END, get_text("msg_select_files"))
-        return
+def toggle_whiteboard():
+    if var_whiteboard.get():
+        entry_original.config(state='disabled')
+        entry_revised.config(state='disabled')
+        btn_browse_left.config(state='disabled')
+        btn_browse_right.config(state='disabled')
+    else:
+        entry_original.config(state='normal')
+        entry_revised.config(state='normal')
+        btn_browse_left.config(state='normal')
+        btn_browse_right.config(state='normal')
 
-    content1 = load_file(file1_path)
-    content2 = load_file(file2_path)
+def perform_compare():
+    if var_whiteboard.get():
+        content1 = text_left.get("1.0", tk.END)
+        content2 = text_right.get("1.0", tk.END)
+    else:
+        file1_path = entry_original.get()
+        file2_path = entry_revised.get()
+        
+        if not file1_path or not file2_path:
+            text_left.delete('1.0', tk.END)
+            text_right.delete('1.0', tk.END)
+            text_left.insert(tk.END, get_text("msg_select_files"))
+            return
+
+        content1 = load_file(file1_path)
+        content2 = load_file(file2_path)
     
     paragraphs1 = split_paragraphs(content1)
     paragraphs2 = split_paragraphs(content2)
@@ -194,6 +212,7 @@ def update_ui_text():
     root.title(f"{get_text('window_title')} {VERSION}")
     btn_compare.config(text=get_text("btn_compare"))
     chk_sync.config(text=get_text("chk_sync"))
+    chk_whiteboard.config(text=get_text("chk_whiteboard"))
     lbl_original.config(text=get_text("lbl_original"))
     lbl_revised.config(text=get_text("lbl_revised"))
     btn_browse_left.config(text=get_text("btn_browse"))
@@ -206,7 +225,7 @@ def change_language(event):
 
 def main():
     global root, entry_original, entry_revised, text_left, text_right
-    global btn_compare, chk_sync, lbl_original, lbl_revised, btn_browse_left, btn_browse_right, combo_lang
+    global btn_compare, chk_sync, chk_whiteboard, lbl_original, lbl_revised, btn_browse_left, btn_browse_right, combo_lang
     
     root = tk.Tk()
     root.geometry("1280x720")
@@ -225,6 +244,13 @@ def main():
     chk_sync = tk.Checkbutton(frame_top, variable=var_sync, 
                               font=("Segoe UI", 10), bg="#f0f0f0", activebackground="#f0f0f0")
     chk_sync.pack(side=tk.LEFT)
+    
+    # Whiteboard Mode Checkbox
+    global var_whiteboard
+    var_whiteboard = tk.BooleanVar(value=False)
+    chk_whiteboard = tk.Checkbutton(frame_top, variable=var_whiteboard, command=toggle_whiteboard,
+                              font=("Segoe UI", 10), bg="#f0f0f0", activebackground="#f0f0f0")
+    chk_whiteboard.pack(side=tk.LEFT, padx=10)
     
     # Language Selector
     frame_lang = tk.Frame(frame_top)

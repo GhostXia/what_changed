@@ -35,6 +35,10 @@
   - Switch between English and Chinese interface instantly.
   - 支持中英文界面即时切换。
 
+- **📝 Whiteboard Mode / 白板模式**
+  - Paste text directly to compare without loading files.
+  - 无需加载文件，直接粘贴文本进行对比。
+
 ---
 
 ## 🚀 How to Use / 使用指南
