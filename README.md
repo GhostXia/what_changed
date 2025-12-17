@@ -1,7 +1,7 @@
 # What Changed - Academic Document Comparison Tool
 # 论文对比工具 - 专为学术写作设计
 
-![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg) ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey.svg)
+![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg) ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey.svg) ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=GhostXia.what-changed)
 
 > **[📺 在线演示](https://ghostxia.github.io/what_changed/)** — 一分钟内了解这个工具能做什么
 
